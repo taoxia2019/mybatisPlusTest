@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<div shiro:haspermission="user:update"><!--shiro:haspermission="user:update"-->
+进入用户更改页面：<a href="update">用户更改</a><br/>
+</div>
+<div shiro:haspermission="user:add">
+进入用户添加页面：<a href="add">用户添加</a><br/>
+</div>
+
+</body>
+</html>

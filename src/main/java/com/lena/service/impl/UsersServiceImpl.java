@@ -2,6 +2,7 @@ package com.lena.service.impl;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.lena.mapper.UsersMapper;
 import com.lena.pojo.Users;
 import com.lena.service.UsersService;
@@ -32,17 +33,27 @@ public class UsersServiceImpl implements UsersService {
 		// TODO Auto-generated method stub
 		return this.usersMapper.selectById(id);
 	}
+
+	@Override
+	public Users findUserByName(String username) {
+		EntityWrapper<Users> wrap = new EntityWrapper<>();
+		wrap.eq("username",username);
+		List<Users> users = this.usersMapper.selectList(wrap);
+		Users user = users.get(0);
+		return users.get(0);
+	}
+
 	@Override
 	public void updateUser(Users users) {
 		System.out.println(users.getId()+",,,"+users.getUsername());
 
 		this.usersMapper.updateById(users);
-		
 	}
 	@Override
 	public void delUsers(Integer id) {
 		// TODO Auto-generated method stub
 		this.usersMapper.deleteById(id);
 	}
+
 
 }
