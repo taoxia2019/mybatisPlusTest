@@ -14,11 +14,14 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+
+import javax.validation.Valid;
 
 
 @Controller
@@ -44,7 +47,22 @@ public class UsersController {
 	public Object add(){
 		return "user/add";
 	}
-
+    /*非空校验
+    @Valid开启Users类的数据校验
+    BindingResult封装了校验结果
+    在页面中 的对应表单input 框后 <font color="red" th:errors="${users.user}"/>可获得错误信息
+    如跳转发生异常，可在跳转的controller方法中注入Users
+    springmvc默认将users注入到model当中
+    参数的变量名需要和对象名称相同，result使用的是驼峰命名规则
+    */
+    @RequestMapping("/save")
+    public String save(@Valid Users users,BindingResult result){
+        if (result.hasErrors()){
+            return "add";
+        }
+        System.out.println(users);
+	    return "list";
+    }
 	@RequestMapping("/update")
 	public Object update(){
 		return "user/update";
