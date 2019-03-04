@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>用户数据列表</title>
+</head>
+<body>
+	<table border="1" width="40%">
+		<tr>
+			<th>用户 ID</th>
+			<th>用 户 名</th>
+			<th>用户密码</th>
+			<th>用户邮箱</th>
+			<th>用户权限</th>
+			<th>操作</th>
+		</tr>
+
+		<tr th:each="user :${list}">
+			<td th:text="${user.id}"></td>
+			<td th:text="${user.username}"></td>
+			<td th:text="${user.password}"></td>
+			<td th:text="${user.email}"></td>
+			<td th:text="${user.privilege}"></td>
+			<td><a th:href="@{/users/findUserById(id=${user.id})}">更新</a>||
+			<a th:href="@{/users/delUser(id=${user.id})}">删除</a></td>
+		</tr>
+	</table>
+</body>
+</html>

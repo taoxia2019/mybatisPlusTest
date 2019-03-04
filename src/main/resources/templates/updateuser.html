@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form th:action="@{/users/editUser}" method="post">
+	<input type="hidden" name="id" th:field="${user.id}"/>
+		姓名：<input type="text" name="username" th:field="${user.username}"/><br />
+		密码：<input type="password" name="password" th:field="${user.password}"/><br/>
+		邮箱：<input type="text" name ="email" th:field="${user.email}"/><br/>
+		权限：<input type="text" name ="privilege" th:field="${user.privilege}"/><br/>
+		<input type="submit" value="提交" />
+	</form>
+
+</form>
+</body>
+</html>
