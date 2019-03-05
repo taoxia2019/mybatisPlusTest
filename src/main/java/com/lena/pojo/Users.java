@@ -28,9 +28,9 @@ public class Users {
 	* */
 	@TableId(value="id",type = IdType.AUTO)
 	private Integer id;
-	@NotBlank(message = "用户名不能为空")//非空校验 message看重新设置页面呈现的值
+	//@NotBlank(message = "用户名不能为空")//非空校验 message看重新设置页面呈现的值
 	private String username;
-	@NotBlank
+	//@NotBlank
 	private String password;
 	private String privilege;
 	private String email;

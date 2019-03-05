@@ -23,7 +23,6 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 
 import javax.validation.Valid;
 
-
 @Controller
 @RequestMapping("/users")
 public class UsersController {
@@ -56,12 +55,12 @@ public class UsersController {
     参数的变量名需要和对象名称相同，result使用的是驼峰命名规则
     */
     @RequestMapping("/save")
-    public String save(@Valid Users users,BindingResult result){
-        if (result.hasErrors()){
-            return "add";
-        }
+    public String save(Users users){
+		System.out.println(users.getUsername());
+		usersService.addUser(users);
+
         System.out.println(users);
-	    return "list";
+	    return "redirect:/users/findUserAll";
     }
 	@RequestMapping("/update")
 	public Object update(){
@@ -72,7 +71,6 @@ public class UsersController {
 	public Object tologin(){
 		return "login";
 	}
-
 
 	@RequestMapping("/noauth")
 	public Object noauth(){
@@ -98,18 +96,16 @@ public class UsersController {
 			model.addAttribute("msg","密码不正确。");
 			return "login";
 		}
-
-
 	}
 	
-	/*@RequestMapping("/findUserAll")
+	@RequestMapping("/findUserAll")
 	public String findUserAll(Model model){
 		List<Users> list = this.usersService.findUserAll();
 		model.addAttribute("list", list);
 		
 		return "userslist";
 	}
-	@RequestMapping("/findUserById")
+	/*@RequestMapping("/findUserById")
 	public String findUserById(Integer id,Model model){
 		Users user = this.usersService.findUserById(id);
 		model.addAttribute("user", user);
