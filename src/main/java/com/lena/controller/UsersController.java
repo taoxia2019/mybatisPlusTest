@@ -14,6 +14,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -38,14 +40,9 @@ public class UsersController {
 		return page;
 	}
 
-	@RequestMapping("/test")
-	public Object test(){
-		return "test";
-	}
-
 	@RequestMapping("/add")
 	public Object add(){
-		return "user/add";
+		return "adduser";
 	}
     /*非空校验
     @Valid开启Users类的数据校验
@@ -57,19 +54,17 @@ public class UsersController {
     */
     @RequestMapping("/save")
     public String save(Users users){
-
 		System.out.println(users.getPassword());
-		//SimpleHash newPassword= new SimpleHash("MD5",users.getPassword(),"lena",2);
 		String password = MD5Utils.encrypt(users.getPassword());
 		users.setPassword(password);
 		System.out.println(users.getUsername());
 		usersService.addUser(users);
 
-	    return "redirect:/users/findUserAll";
+	    return "redirect:/findUserAll";
     }
-	@RequestMapping("/update")
+	@RequestMapping("/user/update")
 	public Object update(){
-		return "user/update";
+		return "updateuser";
 	}
 
 	@RequestMapping("/tologin")
@@ -83,7 +78,7 @@ public class UsersController {
 	}
 
 	@RequestMapping("/login")
-	public Object login(String username,String password,Model model){
+	public Object login(String username, String password, Model model, HttpServletRequest request){
 		//1、获得主体
 		Subject subject = SecurityUtils.getSubject();
 		String newPassword = MD5Utils.encrypt(password);
@@ -91,10 +86,12 @@ public class UsersController {
 		UsernamePasswordToken token=new UsernamePasswordToken(username,newPassword);
 		System.out.println(username+"controller");
 		System.out.println(password+"controller");
+
 		//3、执行登录方法
 		try {
 			subject.login(token);
 			model.addAttribute("username",username);
+			request.getSession().setAttribute("username",username);
 			return "homepage";
 		} catch (UnknownAccountException e) {
 			model.addAttribute("msg","用户名不存在");
