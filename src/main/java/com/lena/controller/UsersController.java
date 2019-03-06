@@ -10,6 +10,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,10 +57,13 @@ public class UsersController {
     */
     @RequestMapping("/save")
     public String save(Users users){
+
+		System.out.println(users.getPassword());
+		SimpleHash newPassword= new SimpleHash("MD5",users.getPassword(),"lena",2);
+		users.setPassword(newPassword.toString());
 		System.out.println(users.getUsername());
 		usersService.addUser(users);
 
-        System.out.println(users);
 	    return "redirect:/users/findUserAll";
     }
 	@RequestMapping("/update")
