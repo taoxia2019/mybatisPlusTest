@@ -49,10 +49,10 @@ public class UserRealm extends AuthorizingRealm{
 			return null;
 		}
 		//盐值
-		ByteSource credentialsSalt = ByteSource.Util.bytes("lena");
+		//ByteSource credentialsSalt = ByteSource.Util.bytes("lena");
 		System.out.println(user.getPassword());
 		//封装用户信息，构建AuthenticationInfo对象并返回
-		return new SimpleAuthenticationInfo(user,user.getPassword(),credentialsSalt,"");
+		return new SimpleAuthenticationInfo(user,user.getPassword(),"");
 	}
 
 }

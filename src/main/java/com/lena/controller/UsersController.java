@@ -5,6 +5,7 @@ import java.util.List;
 import com.lena.mapper.UsersMapper;
 import com.lena.pojo.Users;
 import com.lena.service.UsersService;
+import com.lena.utils.MD5Utils;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -25,7 +26,6 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/users")
 public class UsersController {
 	
 	@Autowired
@@ -59,8 +59,9 @@ public class UsersController {
     public String save(Users users){
 
 		System.out.println(users.getPassword());
-		SimpleHash newPassword= new SimpleHash("MD5",users.getPassword(),"lena",2);
-		users.setPassword(newPassword.toString());
+		//SimpleHash newPassword= new SimpleHash("MD5",users.getPassword(),"lena",2);
+		String password = MD5Utils.encrypt(users.getPassword());
+		users.setPassword(password);
 		System.out.println(users.getUsername());
 		usersService.addUser(users);
 
@@ -85,14 +86,16 @@ public class UsersController {
 	public Object login(String username,String password,Model model){
 		//1、获得主体
 		Subject subject = SecurityUtils.getSubject();
+		String newPassword = MD5Utils.encrypt(password);
 		//2、封装用户数据
-		UsernamePasswordToken token=new UsernamePasswordToken(username,password);
+		UsernamePasswordToken token=new UsernamePasswordToken(username,newPassword);
 		System.out.println(username+"controller");
 		System.out.println(password+"controller");
 		//3、执行登录方法
 		try {
 			subject.login(token);
-			return "redirect:test";
+			model.addAttribute("username",username);
+			return "homepage";
 		} catch (UnknownAccountException e) {
 			model.addAttribute("msg","用户名不存在");
 			return "login";
@@ -107,7 +110,7 @@ public class UsersController {
 		List<Users> list = this.usersService.findUserAll();
 		model.addAttribute("list", list);
 		
-		return "userslist";
+		return "userlist";
 	}
 	/*@RequestMapping("/findUserById")
 	public String findUserById(Integer id,Model model){

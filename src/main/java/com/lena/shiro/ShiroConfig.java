@@ -34,6 +34,9 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/update", "authc");*/
 		filterChainDefinitionMap.put("/login", "anon");
 		filterChainDefinitionMap.put("/test", "authc");
+		filterChainDefinitionMap.put("/homepage", "authc");
+		filterChainDefinitionMap.put("/userlist", "authc");
+		//filterChainDefinitionMap.put("/add","perms[user:add]");
 		filterChainDefinitionMap.put("/add","perms[user:add]");
 		filterChainDefinitionMap.put("/update","perms[user:update]");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -43,7 +46,7 @@ public class ShiroConfig {
 		return shiroFilterFactoryBean;
 		
 	}
-	@Bean("hashedCredentialsMatcher")
+	/*@Bean("hashedCredentialsMatcher")
 	public HashedCredentialsMatcher getHashedCredentialsMatcher(){
 		HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
 		//指定加密方式为MD5
@@ -53,7 +56,7 @@ public class ShiroConfig {
 		//默认是true，此时用的是密码加密用的是Hex编码；false时用Base64编码
 		credentialsMatcher.setStoredCredentialsHexEncoded(true);
 		return credentialsMatcher;
-	}
+	}*/
 	/**
 	 * 创建DefaultWebSecurityManager
 	 */
@@ -67,10 +70,8 @@ public class ShiroConfig {
 	 * 创建Realm
 	 */
 	@Bean(name="userRealm")
-	public UserRealm getUserRealm(@Qualifier("hashedCredentialsMatcher") HashedCredentialsMatcher matcher){
-		UserRealm userRealm = new UserRealm();
-		userRealm.setAuthorizationCachingEnabled(false);
-		userRealm.setCredentialsMatcher(matcher);
+	public UserRealm getUserRealm(){
+
 		return new UserRealm();
 	}
 	/**
